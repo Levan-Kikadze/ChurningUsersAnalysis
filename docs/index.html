@@ -1,48 +1,56 @@
-
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
 <meta charset="utf-8">
 <title>Discount Dashboard</title>
+
+<!-- 1️⃣  Hide the whole page until the password check passes -->
 <style>
-/* ---------- base layout ---------- */
-body { font-family: Arial, sans-serif; margin: 0 20px 40px; }
-h1  { margin-top: 30px; }
+  /* Base layout ----------------------------------------------------------- */
+  body        { display:none; font-family:Arial,sans-serif; margin:0 20px 40px; }
+  h1          { margin-top:30px; }
 
-.nav {
-  position: fixed; top: 10px; right: 10px;
-  background: #f7f7f7; padding: 10px 14px;
-  border: 1px solid #ddd; border-radius: 8px;
-  font-size: 14px; line-height: 1.6;
-}
-.nav a { text-decoration: none; color: #0077cc; }
-.nav a:hover { text-decoration: underline; }
+  /* Sticky nav ------------------------------------------------------------ */
+  .nav        { position:fixed; top:10px; right:10px; background:#f7f7f7;
+                padding:10px 14px; border:1px solid #ddd; border-radius:8px;
+                font-size:14px; line-height:1.6; }
+  .nav a      { text-decoration:none; color:#0077cc; }
+  .nav a:hover{ text-decoration:underline; }
 
-.section { margin: 80px 0; }
+  .section    { margin:80px 0; }
 
-/* ---------- table styling ---------- */
-#analysis table {
-  border-collapse: collapse;
-  margin: 20px auto;            /* ← centers the whole table */
-}
-#analysis th,
-#analysis td {
-  border: 1px solid #ddd;
-  padding: 6px;
-  text-align: center;
-}
+  /* Table styling --------------------------------------------------------- */
+  #analysis table { border-collapse:collapse; margin:20px auto; }
+  #analysis th,
+  #analysis td    { border:1px solid #ddd; padding:6px; text-align:center; }
 </style>
- <script>
-    const password = prompt("Enter password:");
-    const correct = "LetMeSeeTheData3481";
+<script>
+const CORRECT = "1";
+const pwd      = prompt("Enter password:");
 
-    if (password !== correct) {
-      document.body.innerHTML = "<h1>Unauthorized</h1><p>Incorrect password.</p>";
-      throw new Error("Unauthorized access");
-    }
-  </script>
+if (pwd === CORRECT) {
+  document.addEventListener("DOMContentLoaded", () => {
+    /* 1️⃣ reveal page */
+    document.body.style.display = "block";
+
+    /* 2️⃣ tell every Plotly chart to re‑measure itself */
+    setTimeout(() => {
+      document
+        .querySelectorAll(".plotly-graph-div")
+        .forEach(el => Plotly.Plots.resize(el));
+    }, 0);              // 0 ms = next tick, after layout is settled
+  });
+} else {
+  document.open();
+  document.write("<h1>Unauthorized</h1><p>Incorrect password.</p>");
+  document.close();
+  throw new Error("Unauthorized access");
+}
+</script>
+
+<!-- No more content needed here – dashboard markup starts in <body> -->
 </head>
-</head>
+
 <body>
 
 <div class="nav">
